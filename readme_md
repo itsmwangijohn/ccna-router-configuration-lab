@@ -1,5 +1,4 @@
-# Cisco Packet Tracer Lab: Basic Router Configuration & Security
-
+![Physical Topology Diagram](physical%20topology.png)
 A Packet Tracer Physical Mode (PTPM) simulation project demonstrating initial ISR router setup, dual-stack (IPv4/IPv6) addressing, SSH remote access hardening, and command-line verification techniques.
 
 ---
