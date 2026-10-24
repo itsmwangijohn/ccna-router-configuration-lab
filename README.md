@@ -20,7 +20,24 @@
 
 
 
-Cisco Packet Tracer Lab: Basic Router Configuration & SecurityA Packet Tracer Physical Mode (PTPM) simulation project demonstrating initial ISR router setup, dual-stack (IPv4/IPv6) addressing, SSH remote access hardening, and command-line verification techniques.📌 Topology & ObjectivesTopology: Star / Physical Rack & Stack SetupCore Devices:Router: R1 (Cisco 4321 ISR)Switch: Cisco Catalyst 2960End Devices: PC-A (Workstation), ServerKey Objectives:Objective 1: Cable physical rack equipment and initialize basic terminal connections.Objective 2: Configure device hardening including password length enforcement, brute-force login blocking, encrypted local users, and SSH v2 access.Objective 3: Implement dual-stack (IPv4 & IPv6) interface addressing and enable IPv6 routing.Objective 4: Verify remote connectivity using SSH and evaluate system status using IOS filtering commands.🗺️ IP Addressing TableDeviceInterfaceIPv4 AddressSubnet MaskIPv6 Address / PrefixDefault GatewayDescriptionR1G0/0/0192.168.1.1255.255.255.02001:DB8:ACAD:1::1/64N/ALAN ConnectionR1Loopback010.10.1.1255.255.255.2552001:DB8:ACAD:FF::1/64N/AManagement InterfacePC-ANIC192.168.1.3255.255.255.02001:DB8:ACAD:1::3/64192.168.1.1 / fe80::1Host WorkstationServerNIC192.168.1.2255.255.255.02001:DB8:ACAD:1::2/64192.168.1.1 / fe80::1Local Network Server⚙️ Configuration Highlights1. Hardening & Security Policy (R1)Enforced password security policies, encrypted local administrator accounts, and configured brute-force prevention:hostname R1
+Cisco Packet Tracer Lab: Basic Router Configuration & Security
+A Packet Tracer Physical Mode (PTPM) simulation project demonstrating initial ISR router setup, dual-stack (IPv4/IPv6) addressing, SSH remote access hardening, and command-line verification techniques.
+📌 Topology & ObjectivesTopology: Star / Physical Rack & Stack SetupCore Devices:Router: R1 (Cisco 4321 ISR)Switch: Cisco Catalyst 2960End Devices: PC-A (Workstation), Server
+Key Objectives:Objective :
+1: Cable physical rack equipment and initialize basic terminal connections.Objective 
+2: Configure device hardening including password length enforcement, brute-force login blocking, encrypted local users, and SSH v2 access.Objective 
+3: Implement dual-stack (IPv4 & IPv6) interface addressing and enable IPv6 routing.Objective
+4: Verify remote connectivity using SSH and evaluate system status using IOS filtering commands.
+🗺️ IP Addressing Table
+Device     Interface  IPv4 Address Subnet MaskIPv6 Address / PrefixDefault 
+R1         G0/0/0     192.168.1.1/24
+R1         loopback0  10.10.1.1
+PCA        Nic        192.168.1.3
+SERVER     NIC        192.168.1.2
+⚙️CONFIGURATION HIGHLIGHTS
+1. Hardening & Security Policy (R1)
+2. Enforced password security policies, encrypted local administrator accounts, and configured brute-force prevention
+3. hostname R1
 ip domain-name ccna-lab.com
 security passwords min-length 12
 service password-encryption
@@ -28,7 +45,7 @@ login block-for 120 attempts 3 within 60
 username SSHadmin secret 55Hadm!n2020
 enable secret $cisco!PRIV*
 banner motd # Unauthorized Access Prohibited! #
-2. SSH Remote Access SetupKey generation and restriction of line access strictly to SSH:crypto key generate rsa modulus 1024
+4. SSH Remote Access SetupKey generation and restriction of line access strictly to SSH:crypto key generate rsa modulus 1024
 
 line console 0
  password $cisco!!CON*
