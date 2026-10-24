@@ -1,60 +1,62 @@
-Router> enable
-Router# configure terminal
+<img width="660" height="307" alt="image" src="https://github.com/user-attachments/assets/203e0fba-fcca-4cf1-9cc3-46499b75f1e9" />
 
-! Set device hostname and domain name
-Router(config)# hostname R1
-R1(config)# ip domain-name ccna-lab.com
 
-! Security & Password Policies
-R1(config)# service password-encryption
-R1(config)# security passwords min-length 12
-R1(config)# login block-for 120 attempts 3 within 60
 
-! Create local admin user for SSH
-R1(config)# username SSHadmin secret 55Hadm!n2020
 
-! Generate RSA keys for SSH (1024 bit modulus)
-R1(config)# crypto key generate rsa
-% How many bits in the modulus [512]: 1024
 
-! Privileged EXEC Password
-R1(config)# enable secret $cisco!PRIV*
 
-! Console Line Configuration
-R1(config)# line console 0
-R1(config-line)# password $cisco!!CON*
-R1(config-line)# login
-R1(config-line)# exec-timeout 4 0
-R1(config-line)# exit
 
-! VTY Line Configuration (SSH Only)
-R1(config)# line vty 0 4
-R1(config-line)# password $cisco!!VTY*
-R1(config-line)# login local
-R1(config-line)# transport input ssh
-R1(config-line)# exec-timeout 4 0
-R1(config-line)# exit
 
-! MOTD Banner
-R1(config)# banner motd #!UNAuthorized Access Prohibited! #
 
-! Enable IPv6 Routing
-R1(config)# ipv6 unicast-routing
 
-! Interface Configurations (Example based on typical topology interfaces)
-R1(config)# interface gigabitethernet 0/0/0
-R1(config-if)# description Connection to Switch LAN
-R1(config-if)# ip address 192.168.1.1 255.255.255.0
-R1(config-if)# ipv6 address 2001:DB8:ACAD:1::1/64
-R1(config-if)# no shutdown
-R1(config-if)# exit
 
-R1(config)# interface loopback 0
-R1(config-if)# description Management Loopback Interface
-R1(config-if)# ip address 10.10.1.1 255.255.255.255
-R1(config-if)# ipv6 address 2001:DB8:ACAD:FF::1/64
-R1(config-if)# no shutdown
-R1(config-if)# exit
 
-! Save configuration
-R1# copy running-config startup-config
+
+
+
+
+
+
+
+
+
+Cisco Packet Tracer Lab: Basic Router Configuration & SecurityA Packet Tracer Physical Mode (PTPM) simulation project demonstrating initial ISR router setup, dual-stack (IPv4/IPv6) addressing, SSH remote access hardening, and command-line verification techniques.📌 Topology & ObjectivesTopology: Star / Physical Rack & Stack SetupCore Devices:Router: R1 (Cisco 4321 ISR)Switch: Cisco Catalyst 2960End Devices: PC-A (Workstation), ServerKey Objectives:Objective 1: Cable physical rack equipment and initialize basic terminal connections.Objective 2: Configure device hardening including password length enforcement, brute-force login blocking, encrypted local users, and SSH v2 access.Objective 3: Implement dual-stack (IPv4 & IPv6) interface addressing and enable IPv6 routing.Objective 4: Verify remote connectivity using SSH and evaluate system status using IOS filtering commands.🗺️ IP Addressing TableDeviceInterfaceIPv4 AddressSubnet MaskIPv6 Address / PrefixDefault GatewayDescriptionR1G0/0/0192.168.1.1255.255.255.02001:DB8:ACAD:1::1/64N/ALAN ConnectionR1Loopback010.10.1.1255.255.255.2552001:DB8:ACAD:FF::1/64N/AManagement InterfacePC-ANIC192.168.1.3255.255.255.02001:DB8:ACAD:1::3/64192.168.1.1 / fe80::1Host WorkstationServerNIC192.168.1.2255.255.255.02001:DB8:ACAD:1::2/64192.168.1.1 / fe80::1Local Network Server⚙️ Configuration Highlights1. Hardening & Security Policy (R1)Enforced password security policies, encrypted local administrator accounts, and configured brute-force prevention:hostname R1
+ip domain-name ccna-lab.com
+security passwords min-length 12
+service password-encryption
+login block-for 120 attempts 3 within 60
+username SSHadmin secret 55Hadm!n2020
+enable secret $cisco!PRIV*
+banner motd # Unauthorized Access Prohibited! #
+2. SSH Remote Access SetupKey generation and restriction of line access strictly to SSH:crypto key generate rsa modulus 1024
+
+line console 0
+ password $cisco!!CON*
+ exec-timeout 4 0
+ login
+exit
+
+line vty 0 4
+ password $cisco!!VTY*
+ exec-timeout 4 0
+ transport input ssh
+ login local
+exit
+3. Dual-Stack Routing & InterfacesConfigured IPv4 and IPv6 on routed interfaces:ipv6 unicast-routing
+
+interface GigabitEthernet0/0/0
+ description Connection to Switch LAN
+ ip address 192.168.1.1 255.255.255.0
+ ipv6 address 2001:DB8:ACAD:1::1/64
+ no shutdown
+exit
+
+interface Loopback0
+ description Management Loopback Interface
+ ip address 10.10.1.1 255.255.255.255
+ ipv6 address 2001:DB8:ACAD:FF::1/64
+ no shutdown
+exit
+🔍 Verification & TestingSSH Connectivity: Verified encrypted connection from PC-A to R1's IPv4 and IPv6 loopback addresses via SSH using SSHadmin.Ping Tests: Confirmed end-to-end ICMP reachability across IPv4 and IPv6 configurations between PC-A and Server.IOS Output Filtering: Used output modifiers (pipes |) to verify specific active configuration parameters:R1# show version | include register
+R1# show running-config | section vty
+R1# show ip interface brief
